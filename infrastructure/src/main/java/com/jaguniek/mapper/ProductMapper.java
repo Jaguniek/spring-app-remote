@@ -19,7 +19,8 @@ public class ProductMapper {
 	}
 
 	// Method converting constrains String into TreeNode
-	//TODO refactor
+	// got the initial concept from https://www.geeksforgeeks.org/construct-binary-tree-string-bracket-representation/
+	// TODO refactor
 	private TreeNode treeFromString(String inputString, int beginIndex, int endIndex) {
 		TreeNode root = null;
 
