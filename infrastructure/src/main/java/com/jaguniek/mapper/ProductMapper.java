@@ -26,7 +26,6 @@ public class ProductMapper {
 		TreeNode root = null;
 
 		if (inputString.charAt(beginIndex) == '\'') {
-			// int endIndex = inputString.indexOf('\'');
 			root = newNode(inputString.substring(beginIndex + 1, endIndex));
 		} else {
 			endIndex = inputString.indexOf('(');
@@ -34,10 +33,14 @@ public class ProductMapper {
 
 			int subTreeBeginIndex = endIndex + 1;
 			endIndex = findMatchingBracketIndex(inputString);
-			//endIndex = inputString.indexOf(')');
+			// int commaIndex = findCommaIndex(inputString);
 			int commaIndex = inputString.indexOf(',');
 			if (commaIndex > 0) {
 				String subLeftTreeString = inputString.substring(subTreeBeginIndex, commaIndex - 1);
+				if (inputString.substring(subTreeBeginIndex).charAt(0) != '\'') {
+					commaIndex = findCommaIndex(inputString);
+					subLeftTreeString = inputString.substring(subTreeBeginIndex, commaIndex);
+				}
 				String subRightTreeString = inputString.substring(commaIndex + 1, endIndex);
 				root.setLeft(treeFromString(subLeftTreeString, 0, subLeftTreeString.length()));
 				root.setRight(treeFromString(subRightTreeString, 0, subRightTreeString.length() - 1));
@@ -71,6 +74,29 @@ public class ProductMapper {
 					// the required index
 					if (s.isEmpty())
 						return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	private int findCommaIndex(String inputString) {
+		Stack<Character> s = new Stack<>();
+		for (int i = 0; i <= inputString.length() - 1; i++) {
+
+			// if open parenthesis, push it
+			if (inputString.charAt(i) == '(') {
+				s.add(inputString.charAt(i));
+			}
+			// if close parenthesis
+			else if (inputString.charAt(i) == ')') {
+				if (s.peek() == '(') {
+					s.pop();
+
+					// if stack is empty, this is
+					// the required index
+					if (s.size() == 1)
+						return i + 1;
 				}
 			}
 		}
