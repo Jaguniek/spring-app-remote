@@ -76,25 +76,98 @@ public class ProductMapperTest {
 			
 	}
 	
+	@Test
+	public void testOrOperatorWithOneLeafAndOneOr() {
+		ProductDb productdb= new ProductDb(1234,"Lenovo P50", "OR('VIP_ONLY',OR('CHICKEN_ONLY','PLAY_ONLY'))");
+		Product product = productMapper.map(productdb);
+
+
+		System.out.println("testOrOperatorWithTwoLeaves ==========");
+		System.out.println(product.getConstraints().getData());
+		System.out.println(product.getConstraints().getLeft().getData());
+		System.out.println(product.getConstraints().getRight().getData());
+		System.out.println(product.getConstraints().getRight().getLeft().getData());
+		System.out.println(product.getConstraints().getRight().getRight().getData());
+		
+		assertTrue(product.getConstraints().getData().equals("OR"));
+		assertTrue(product.getConstraints().getLeft().getData().equals("VIP_ONLY"));
+		assertTrue(product.getConstraints().getRight().getData().equals("OR"));
+		assertTrue(product.getConstraints().getRight().getLeft().getData().equals("CHICKEN_ONLY"));
+		assertTrue(product.getConstraints().getRight().getRight().getData().equals("PLAY_ONLY"));
+			
+	}
+	
+	@Test
+	public void testOrOperatorWithTwoNodesAndLeafes() {
+		ProductDb productdb= new ProductDb(1234,"Lenovo P50", "OR('VIP_ONLY',OR(AND('CHICKEN_ONLY','ZZZ'),'PLAY_ONLY'))");
+		Product product = productMapper.map(productdb);
+
+
+		System.out.println("testOrOperatorWithTwoNodesAndLeafes ==========");
+		//OR
+		System.out.println(product.getConstraints().getData());
+		//VIP_ONLY
+		System.out.println(product.getConstraints().getLeft().getData());
+		//OR
+		System.out.println(product.getConstraints().getRight().getData());
+		//AND
+		System.out.println(product.getConstraints().getRight().getLeft().getData());
+		//CHICKEN_ONLY
+		System.out.println(product.getConstraints().getRight().getLeft().getLeft().getData());
+		//ZZZ
+		System.out.println(product.getConstraints().getRight().getLeft().getRight().getData());		
+		//PLAY_ONLY
+		System.out.println(product.getConstraints().getRight().getRight().getData());
+		
+		assertTrue(product.getConstraints().getData().equals("OR"));
+		
+		assertTrue(product.getConstraints().getLeft().getData().equals("VIP_ONLY"));
+		
+		assertTrue(product.getConstraints().getRight().getData().equals("OR"));
+		
+		assertTrue(product.getConstraints().getRight().getLeft().getData().equals("AND"));
+		assertTrue(product.getConstraints().getRight().getLeft().getLeft().getData().equals("CHICKEN_ONLY"));
+		assertTrue(product.getConstraints().getRight().getLeft().getRight().getData().equals("ZZZ"));
+			
+		assertTrue(product.getConstraints().getRight().getRight().getData().equals("PLAY_ONLY"));
+	}
+	
 //	@Test
-//	public void testOrOperatorWithOneLeafAndOneOr() {
-//		ProductDb productdb= new ProductDb(1234,"Lenovo P50", "OR('VIP_ONLY',OR('CHICKEN_ONLY','PLAY_ONLY'))");
+//	public void testOrOperatorWithTwoNodesAndLeafesAndNot() {
+//		ProductDb productdb= new ProductDb(1234,"Lenovo P50", "OR(NOT('VIP_ONLY'),OR(AND('CHICKEN_ONLY','ZZZ'),'PLAY_ONLY'))");
 //		Product product = productMapper.map(productdb);
 //
 //
-//		System.out.println("testOrOperatorWithTwoLeaves ==========");
+//		System.out.println("testOrOperatorWithTwoNodesAndLeafesAndNot ==========");
+//		//OR
 //		System.out.println(product.getConstraints().getData());
+//		//NOT
 //		System.out.println(product.getConstraints().getLeft().getData());
+//		//VIP_ONLY
+//		System.out.println(product.getConstraints().getLeft().getLeft().getData());
+//		//OR
 //		System.out.println(product.getConstraints().getRight().getData());
+//		//AND
 //		System.out.println(product.getConstraints().getRight().getLeft().getData());
+//		//CHICKEN_ONLY
+//		System.out.println(product.getConstraints().getRight().getLeft().getLeft().getData());
+//		//ZZZ
+//		System.out.println(product.getConstraints().getRight().getLeft().getRight().getData());		
+//		//PLAY_ONLY
 //		System.out.println(product.getConstraints().getRight().getRight().getData());
 //		
 //		assertTrue(product.getConstraints().getData().equals("OR"));
-//		assertTrue(product.getConstraints().getLeft().getData().equals("VIP_ONLY"));
+//		
+//		assertTrue(product.getConstraints().getLeft().getData().equals("NOT"));
+//		assertTrue(product.getConstraints().getLeft().getLeft().getData().equals("VIP_ONLY"));
+//		
 //		assertTrue(product.getConstraints().getRight().getData().equals("OR"));
-//		assertTrue(product.getConstraints().getRight().getLeft().getData().equals("CHICKEN_ONLY"));
-//		assertTrue(product.getConstraints().getRight().getRight().getData().equals("PLAY_ONLY"));
+//		
+//		assertTrue(product.getConstraints().getRight().getLeft().getData().equals("AND"));
+//		assertTrue(product.getConstraints().getRight().getLeft().getLeft().getData().equals("CHICKEN_ONLY"));
+//		assertTrue(product.getConstraints().getRight().getLeft().getRight().getData().equals("ZZZ"));
 //			
+//		assertTrue(product.getConstraints().getRight().getRight().getData().equals("PLAY_ONLY"));
 //	}
 	
 }
