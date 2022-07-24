@@ -12,8 +12,8 @@ import lombok.Setter;
 public class Product {
 
 	private int productId;
-	
+
 	private String productName;
-	
-	private TreeNode constraints = new TreeNode();
+
+	private TreeNode constraints;
 }

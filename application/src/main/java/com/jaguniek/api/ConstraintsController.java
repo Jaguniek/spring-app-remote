@@ -14,7 +14,7 @@ public class ConstraintsController {
 
 	private ConstraintService constraintService;
 
-	@GetMapping("/")
+	@GetMapping("/isAllowed")
 	public ResponseEntity<Boolean> isAllowed(User user, String productId) {
 		return ResponseEntity.ok(constraintService.isAllowed(user, productId));
 

@@ -16,7 +16,9 @@ public class ProductService implements ProductProvider{
 
 	private ProductDb getById(String id) {
 		//TODO implement call to ext service
-		return null;
+		
+		return new ProductDb(1234, "Lenovo P50",
+				"OR('VIP_ONLY',AND(NOT('FOR_RICH_PEOPLE'),'WITH_RELATIONS'))");
 	}
 
 }
